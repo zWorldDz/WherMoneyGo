@@ -1,0 +1,18 @@
+
+-details
+index
+date
+amount
+description
+fk-username
+
+
+-user
+index
+pk-username
+userpassword
+useremail
+
+1. direction
+2. sal
+3. 
