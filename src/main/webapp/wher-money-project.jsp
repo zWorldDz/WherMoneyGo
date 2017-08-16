@@ -83,6 +83,7 @@
     <table class="table table-striped table-hover">
         <thead>
         <tr>
+          <th class="text-center">ID.</th>    
           <th class="text-center">Description</th>    
           <th class="text-center">Amount</th>     
           <th class="text-center">Date</th>     
@@ -91,13 +92,14 @@
         </thead>
         <tbody>
         <tr>
-          <c:forEach var="temp" items="${DETAIL_LIST}" >
+          <c:forEach var="temp" items="${LIST_DETAIL}" >
           <!-- Link for list of details -->
           <tr>
               <td>${temp.detail_id}</td>
-              <td>${temp.date}</td>
-              <td>${temp.amount}</td>
               <td>${temp.description}</td>
+              <td>${temp.amount}</td>
+              <td>${temp.date}</td>
+              <td><a class="glyphicon glyphicon glyphicon-minus" id="remove"></a></td>                
           </tr>
           </c:forEach>    
         </tbody>
@@ -111,18 +113,19 @@
       <table class="table table-striped table-hover">
         <thead>
         <tr>
+          <th class="text-center">ID.</th>    
           <th class="text-center">Description</th>    
           <th class="text-center">Amount</th>     
           <th class="text-center">Date</th>     
           <th class="text-center"></th>     
-        </tr>   
+        </tr>    
         </thead>
         <tbody>
         <tr>
           <td>MRT</td>    
           <td>$12,300</td>    
           <td>20/07/2016</td>    
-          <td><a class="glyphicon glyphicon glyphicon-minus"></a></td>                
+          <td><a class="glyphicon glyphicon glyphicon-minus" id="remove"></a></td>                
         </tr>
         <tr>
           <td>BUS</td>    

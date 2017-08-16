@@ -6,6 +6,11 @@ public class User {
 		private String userPassword;
 		private String userEmail;
 		
+		public User(int userId) {
+			super();
+			this.userId = userId;
+		}
+
 		public User(int userId, String userName, String userPassword, String userEmail) {
 			super();
 			this.userId = userId;
@@ -20,6 +25,7 @@ public class User {
 			this.userPassword = userPassword;
 			this.userEmail = userEmail;
 		}
+
 
 		public int getUserId() {
 			return userId;

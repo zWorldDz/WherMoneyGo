@@ -1,13 +1,13 @@
 package com.whermoneyGoo.model;
 
 public class Detail {
-	private int detail_id;
+	private String detail_id;
 	private String date;
-	private double amount;
+	private String amount;
 	private String description;
 	private User user;
-		
-	public Detail(int detail_id, String date, double amount, String description, User user) {
+	
+	public Detail(String detail_id, String date, String amount, String description, User user) {
 		super();
 		this.detail_id = detail_id;
 		this.date = date;
@@ -16,16 +16,10 @@ public class Detail {
 		this.user = user;
 	}
 	
-		public Detail(int detail_id, String date) {
-		super();
-		this.detail_id = detail_id;
-		this.date = date;
-	}
-
-	public int getDetail_id() {
+	public String getDetail_id() {
 		return detail_id;
 	}
-	public void setDetail_id(int detail_id) {
+	public void setDetail_id(String detail_id) {
 		this.detail_id = detail_id;
 	}
 	public String getDate() {
@@ -34,10 +28,10 @@ public class Detail {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public double getAmount() {
+	public String getAmount() {
 		return amount;
 	}
-	public void setAmount(double amount) {
+	public void setAmount(String amount) {
 		this.amount = amount;
 	}
 	public String getDescription() {
@@ -52,7 +46,12 @@ public class Detail {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Detail [detail_id=" + detail_id + ", date=" + date + ", amount=" + amount + ", description="
+				+ description + ", user id=" + user.getUserId() + "]";
+	}
 	
 	
 }

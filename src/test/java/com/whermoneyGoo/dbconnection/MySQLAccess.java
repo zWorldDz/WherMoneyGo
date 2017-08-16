@@ -23,7 +23,7 @@ public class MySQLAccess {
             // Result set get the result of the SQL query
             resultSet = statement.executeQuery("select * from Detail");
             writeResultSet(resultSet);
-
+            
         } catch (Exception e) {
             throw e;
         } finally {
