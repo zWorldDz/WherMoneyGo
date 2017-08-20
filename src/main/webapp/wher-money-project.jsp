@@ -7,6 +7,9 @@
 
 <html>
 <head>
+    <!--  Title  -->
+    <title>WherMoneyGoo</title>
+    
     <!-- Avoid zoom-in and out from mobile view-->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     
@@ -35,8 +38,7 @@
     
 </head>
 <body>
-    <input name="command" type="hidden" value="LIST"/>
-
+    
     <section id="top">
       <div class="container text-center">
         <div><h3>Available Budget In <span id="avdate">26 July 2017</span></h3></div> 
@@ -47,8 +49,9 @@
     </section>
     
     <section id="middle">
-    <form class="form-inline" role="form">
-        
+    <form id="detail-form" class="form-inline" action="DetailController"  method="GET" role="form">
+    <input name="date" type="hidden" value="08/08/2018"/>
+    <input name="command" type="hidden" value="ADD"/>
     <div class="container text-center">
         
     <div class="form-group">
@@ -68,12 +71,19 @@
     </div>
         
     <div id="sbtn" class="form-group">
-      <a class="form-control glyphicon glyphicon-play-circle btn-info"></a>
+      <a class="form-control glyphicon glyphicon-play-circle btn-info" id="submit-btn"></a>
     </div>
         
     </div>
         
     </form>
+    <script>
+    	$("#submit-btn").click(function(){
+    		console.log("Form");
+    		$("#detail-form").submit();
+    	});
+    </script>
+    
     </section>
     
     <section id="bot" class="container text-center">
@@ -99,7 +109,7 @@
               <td>${temp.description}</td>
               <td>${temp.amount}</td>
               <td>${temp.date}</td>
-              <td><a class="glyphicon glyphicon glyphicon-minus" id="remove"></a></td>                
+              <td><a class="glyphicon glyphicon glyphicon-minus" class="remove" name="REMOVE" value="${temp.detail_id}"></a></td>                
           </tr>
           </c:forEach>    
         </tbody>
