@@ -2,6 +2,7 @@ package com.whermoneyGoo.dbSettings;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.sql.rowset.CachedRowSet;
@@ -9,12 +10,14 @@ import com.sun.rowset.CachedRowSetImpl;
 
 public class MysqlConnection {
 	
-	Connection conn = null;
-	Statement stmt = null;
-	ResultSet rest = null;
-	
 	public ResultSet RestConnectionBuild(String sql,String option) throws Exception{
-    	
+		//System.out.println("==============");
+		//System.out.println("RestConnectionBuild...");
+		
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rest = null;
+		
     	//For caches rows(Result Set) in memory
     	CachedRowSet rowset = new CachedRowSetImpl();
 
@@ -46,15 +49,45 @@ public class MysqlConnection {
 		return rowset;
 	}
 	
+public PreparedStatement StatementConnectionBuild(String sql,Connection conn) throws Exception{
+		//System.out.println("==============");
+		//System.out.println("StatementConnectionBuild ...");
+		
+		PreparedStatement stmt = null;
+
+		try{
+	    // JDBC Driver
+	    Class.forName("com.mysql.jdbc.Driver");
+	        
+	    // Setup the connection with the DB
+	    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/save_money?user=root&password=root");
+	    
+	   stmt = conn.prepareStatement(sql);
+    	
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		//returning cahce data(Result set)
+		//System.out.println("==============");
+		return stmt;
+		
+	}
+	
 	private void close(Connection conn, Statement stmt, ResultSet rest) throws Exception {
+		//System.out.println("==============");
+		
 		if(conn!=null){
 			conn.close();
+			//System.out.println("Conn Closed in MysqlConnection...");
 		}
 		if(stmt!=null){
 			stmt.close();
+			//System.out.println("Stmt Closed in MysqlConnection...");
 		}
 		if(rest!=null){
 			rest.close();
+			//System.out.println("Rest Closed in MysqlConnection...");
 		}
+		//System.out.println("==============");
 	}
 }

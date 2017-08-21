@@ -23,22 +23,23 @@ public class DetailController extends HttpServlet {
     private DetailDbUtil detailDbUtil = 	new DetailDbUtil();
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("+++++++++");
+		System.out.println("Method: GET");
 		System.out.println("Command: "+request.getParameter("command"));
+		System.out.println("Symbol: "+request.getParameter("symbol"));
+		System.out.println("Income ID: "+ request.getParameter("incomeId"));
+		System.out.println("+++++++++");
 		//System.out.println(request.getParameter("description"));
 		//System.out.println(request.getParameter("amount"));
 		//System.out.println(request.getParameter("date"));
 		
 		try {
 			if(request.getParameter("command") == null){
-				listDetail(request,response);
-			}
-			else if(request.getParameter("command").equalsIgnoreCase("ADD")){
-				System.out.println("DetailController: "+"Before addDetail");
-				addDetail(request,response);
-				}
-			else if(request.getParameter("command").equalsIgnoreCase("REMOVE")){
-				System.out.println("DetailController: "+"Before removeDetail");
-				removeDetail(request,response);
+				System.out.println("DetailController: "+"Call listIncome() function ");
+				listDetails(request,response);
+			}else if(request.getParameter("command").equalsIgnoreCase("REMOVE")){
+				System.out.println("DetailController: "+"Call removeIncome() function ");
+				removeIncome(request,response);
 				}
 			else{
 				System.out.println("End of DetailController");
@@ -50,18 +51,48 @@ public class DetailController extends HttpServlet {
 		}
 	}
 
-	private void removeDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		int detailId = Integer.parseInt(request.getParameter("detailId"));//request.getParameter("userId")
-		
+	private void removeIncome(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("DetailController: "+"Start removeDetail");
-		detailDbUtil.removeDetail(detailId);
-		listDetail(request, response);
+		detailDbUtil.removeIncome(request.getParameter("incomeId"));
+		listDetails(request, response);
 		
 	}
 
-	private void addDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	private void listDetails(HttpServletRequest request, HttpServletResponse response) throws Exception {
+			List<Detail>details = detailDbUtil.getIncomes();
+			request.setAttribute("LIST_DETAIL", details);
+			
+			List<Detail>expenses = detailDbUtil.getExpenses();
+			request.setAttribute("LIST_EXPENSE", expenses);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/wher-money-project.jsp");
+			rd.forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("+++++++++");
+		System.out.println("Method: POST");
+		System.out.println("Command: "+request.getParameter("command"));
+		System.out.println("Symbol: "+request.getParameter("symbol"));
+		System.out.println("+++++++++");
+		try {
+				if(request.getParameter("command").equalsIgnoreCase("ADD")){
+					if(request.getParameter("symbol").equalsIgnoreCase("1")){
+						System.out.println("DetailController: "+"Call addIncome() function ");
+						addIncome(request,response);
+					}else{
+						
+					}
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	
+
+	private void addIncome(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		//Read list attribute from request url
-		System.out.println("DetailController: "+"Start addDetail");
 		String description = request.getParameter("description");
 		String amount= request.getParameter("amount");
 		String date = request.getParameter("date");
@@ -69,23 +100,9 @@ public class DetailController extends HttpServlet {
 		
 		Detail theDetail = new Detail( date, amount, description, userId);
 		System.out.println("DetailController: "+"Start detailDbUtil");
-		detailDbUtil.addPost(theDetail);
-		listDetail(request, response);
-		
+		detailDbUtil.addIncome(theDetail);
+		listDetails(request, response);
+	}
 	}
 
-	private void listDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
-			System.out.println("DetailController: "+"Start listDetail");
-			List<Detail>details = detailDbUtil.getDetails();
-			request.setAttribute("LIST_DETAIL", details);
-			RequestDispatcher rd = request.getRequestDispatcher("/wher-money-project.jsp");
-			rd.forward(request, response);
-		
-		
-	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-	}
-
-}

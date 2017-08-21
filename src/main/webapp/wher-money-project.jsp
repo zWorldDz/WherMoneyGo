@@ -49,9 +49,7 @@
     </section>
     
     <section id="middle">
-    <form id="detail-form" class="form-inline" action="DetailController"  method="GET" role="form">
-    <input name="date" type="hidden" value="08/08/2018"/>
-    <input name="command" type="hidden" value="ADD"/>
+    <form id="detail-form" class="form-inline"role="form">
     <div class="container text-center">
         
     <div class="form-group">
@@ -77,12 +75,7 @@
     </div>
         
     </form>
-    <script>
-    	$("#submit-btn").click(function(){
-    		console.log("Form");
-    		$("#detail-form").submit();
-    	});
-    </script>
+
     
     </section>
     
@@ -90,18 +83,19 @@
     <div class="col-md-6">
     <div id="tb-income" class="text-center">
     <h3>Icome</h3>
-    <table class="table table-striped table-hover">
+    
+    <form>
+    <table id="income-table" class="table table-striped table-hover">
         <thead>
         <tr>
           <th class="text-center">ID.</th>    
           <th class="text-center">Description</th>    
           <th class="text-center">Amount</th>     
           <th class="text-center">Date</th>     
-          <th class="text-center"></th>     
+          <th class="text-center">Action</th>     
         </tr>   
         </thead>
         <tbody>
-        <tr>
           <c:forEach var="temp" items="${LIST_DETAIL}" >
           <!-- Link for list of details -->
           <tr>
@@ -109,52 +103,119 @@
               <td>${temp.description}</td>
               <td>${temp.amount}</td>
               <td>${temp.date}</td>
-              <td><a class="glyphicon glyphicon glyphicon-minus" class="remove" name="REMOVE" value="${temp.detail_id}"></a></td>                
+              <td><a class="glyphicon glyphicon glyphicon-minus income-remove" name="REMOVE" value="${temp.detail_id}"></a></td>                
           </tr>
           </c:forEach>    
         </tbody>
     </table>
+    </form>
     </div>
     </div>
-        
+      <script>
+      
+      $(".income-remove").click(function(){
+          console.log("Income Remove");
+
+          /*
+           * Ajax Post method
+           */
+          var description = $("#description").val();
+     	  var incomeId = $(this).attr("value");
+          //JSON Format
+          var toSer = {  //Data that need to be send to server
+            command: "REMOVE",
+            incomeId: incomeId
+            };
+          		  
+           $.ajax({
+          	 
+            type: "Get", //Method Used
+            
+            url:"DetailController", //API Path
+            
+            data:toSer, //Data that need to be send to server
+                      
+            success:function(data) {
+          	  window.location.replace('/WherMoneyGoo/DetailController');
+            },
+            error:function(textStatus, errorThrown) {
+              console.log(textStatus);//Display error in console log
+            }
+          });
+        });
+
+		
+      
+      $("#submit-btn").click(function(e){
+        console.log("Form");
+        /*
+         * Ajax Post method
+         */
+		 e.preventDefault();
+         var description = $("#description").val();
+         var amount = $("#amount").val();
+         var symbol = $("#symbol").val();
+		                  
+        //JSON Format
+        var toSer = {  //Data that need to be send to server
+          command: "ADD",
+          symbol: symbol,
+          description:description,
+          amount:amount,
+          date:callTodayDate()
+          };
+        		  
+         $.ajax({
+        	 
+          type: "Post", //Method Used
+          
+          url:"DetailController", //API Path
+          
+          data:toSer, //Data that need to be send to server
+                    
+          success:function(data) {
+        	  window.location.replace('/WherMoneyGoo/DetailController');
+          },
+          error:function(textStatus, errorThrown) {
+            console.log(textStatus);//Display error in console log
+          }
+        });
+      });
+      
+      $(document).ready(function() {
+    	  callTodayDate();
+          var income = $('#income-table').DataTable({
+        	  "searching": false
+          });
+          var expense =  $('#expense-table').DataTable({
+        	  "searching": false
+          });
+      } );
+    </script>
     <div class="col-md-6">
     <div id="tb-expense"class="text-center">
     <h3>Expenses</h3>
-      <table class="table table-striped table-hover">
+      <table id="expense-table" class="table table-striped table-hover">
         <thead>
         <tr>
           <th class="text-center">ID.</th>    
           <th class="text-center">Description</th>    
           <th class="text-center">Amount</th>     
           <th class="text-center">Date</th>     
-          <th class="text-center"></th>     
+          <th class="text-center">Action</th>     
         </tr>    
         </thead>
         <tbody>
-        <tr>
-          <td>MRT</td>    
-          <td>$12,300</td>    
-          <td>20/07/2016</td>    
-          <td><a class="glyphicon glyphicon glyphicon-minus" id="remove"></a></td>                
-        </tr>
-        <tr>
-          <td>BUS</td>    
-          <td>$12,000</td>   
-          <td>20/07/2016</td>  
-          <td><a class="glyphicon glyphicon glyphicon-minus"></a></td>                
-        </tr>
-        <tr>
-          <td>CAR</td>    
-          <td>$6,000</td> 
-          <td>20/07/2016</td>   
-          <td><a class="glyphicon glyphicon glyphicon-minus"></a></td>                
-        </tr>  
-        <tr>
-          <td>MOTOR</td>    
-          <td>$1,000</td>     
-          <td>20/07/2016</td>    
-          <td><a class="glyphicon glyphicon glyphicon-minus"></a></td>                
-        </tr>      
+          <c:forEach var="temp" items="${LIST_EXPENSE}" >
+          <!-- Link for list of details -->
+          <tr>
+              <td>${temp.detail_id}</td>
+              <td>${temp.description}</td>
+              <td>${temp.amount}</td>
+              <td>${temp.date}</td>
+              <td><a class="glyphicon glyphicon glyphicon-minus income-remove" name="REMOVE" value="${temp.detail_id}"></a></td>                
+          </tr>
+          </c:forEach> 
         </tbody>
       </table>
     </div>    
