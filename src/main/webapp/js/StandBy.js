@@ -1,31 +1,14 @@
-/*
-
-var add = (function(){
-    
-}());
-
-$(document).ready(function(){
-    //$('#tb-income').DataTable();
-    /*var toSer = {  //Data that need to be send to server
-        "venue": venue, 
-        "startDate": newStartdate, 
-        "endDate": newEnddate
-    }
-		  
-    $.ajax({
-      type: "GET", //Method Used
-
-      url:"data.txt", //API Path
-
-      data:"", //Data that need to be send to server
-
-      success:function(data) {
-        alert(data); 
-      },
-      error:function(textStatus, errorThrown) {
-        console.log(textStatus);//Display error in console log
+function callTodayDate(){
+          var today = new Date();
+          var dd = today.getDate();
+          var mm = today.getMonth()+1; //January is 0!
+          var yyyy = today.getFullYear();
+          if(dd<10){
+              dd='0'+dd;
+          } 
+          if(mm<10){
+              mm='0'+mm;
+          } 
+          today = dd+'/'+mm+'/'+yyyy;
+          return today;
       }
-    });
-} );
-
-*/
