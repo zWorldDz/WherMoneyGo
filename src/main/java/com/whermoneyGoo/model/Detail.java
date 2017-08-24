@@ -1,13 +1,13 @@
 package com.whermoneyGoo.model;
 
 public class Detail {
-	private String detail_id;
+	private int detail_id;
 	private String date;
 	private String amount;
 	private String description;
 	private User user;
 	
-	public Detail(String detail_id, String date, String amount, String description, User user) {
+	public Detail(int detail_id, String date, String amount, String description, User user) {
 		super();
 		this.detail_id = detail_id;
 		this.date = date;
@@ -16,10 +16,22 @@ public class Detail {
 		this.user = user;
 	}
 	
-	public String getDetail_id() {
+	public Detail(String date, String amount, String description, User user) {
+		super();
+		this.date = date;
+		this.amount = amount;
+		this.description = description;
+		this.user = user;
+	}
+
+	public Detail(int parseInt) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getDetail_id() {
 		return detail_id;
 	}
-	public void setDetail_id(String detail_id) {
+	public void setDetail_id(int detail_id) {
 		this.detail_id = detail_id;
 	}
 	public String getDate() {
