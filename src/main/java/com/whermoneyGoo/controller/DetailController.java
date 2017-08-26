@@ -40,8 +40,7 @@ public class DetailController extends HttpServlet {
 			}else if(request.getParameter("command").equalsIgnoreCase("REMOVE")){
 				System.out.println("DetailController: "+"Call removeIncome() function ");
 				removeIncome(request,response);
-				}
-			else{
+				}else{
 				System.out.println("End of DetailController");
 				//listDetail(request,response);
 				}
@@ -50,6 +49,27 @@ public class DetailController extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+
+
+	private void updateIncome(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		//read Student info from form data
+		int  incomeId =Integer.parseInt(request.getParameter("incomeId"));
+		String amount = request.getParameter("amount");
+		String description = request.getParameter("description");
+		
+		System.out.println(amount +".."+description);
+		
+		
+		//create a new obj
+		Detail theDetail = new Detail(incomeId,amount,description);
+		
+		//perform update on db
+		detailDbUtil.updateIncome(theDetail);
+		//send them back to the list student page
+		listDetails(request,response);
+		
+	}
+
 
 	private void removeIncome(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("DetailController: "+"Start removeDetail");
@@ -80,10 +100,11 @@ public class DetailController extends HttpServlet {
 					if(request.getParameter("symbol").equalsIgnoreCase("1")){
 						System.out.println("DetailController: "+"Call addIncome() function ");
 						addIncome(request,response);
-					}else{
-						
 					}
-				}
+				}else if(request.getParameter("command").equalsIgnoreCase("UPDATE")){
+					System.out.println("DetailController: "+"Call updateIncome() function ");
+					updateIncome(request,response);
+					}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

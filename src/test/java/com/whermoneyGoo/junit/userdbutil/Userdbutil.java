@@ -21,7 +21,7 @@ public class Userdbutil {
 	@Test
 	public void test_detail_method() throws Exception {
 		DetailDbUtil details = new DetailDbUtil();
-		for(Detail i:details.getDetails())
+		for(Detail i:details.getIncomes())
 			System.out.println(i);
     }
 	
