@@ -28,6 +28,13 @@ public class Detail {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Detail(int detail_id, String amount, String description) {
+		super();
+		this.detail_id = detail_id;
+		this.amount = amount;
+		this.description = description;	
+		}
+
 	public int getDetail_id() {
 		return detail_id;
 	}

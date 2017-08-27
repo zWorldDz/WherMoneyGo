@@ -27,7 +27,7 @@ public class UserDbUtil {
     		String option = "create";
     		
     		//Pass return value(rest) from ConnectionBuild to local rest
-    		rest = mysqlRest.ConnectionBuild(sql,option);
+    		rest = mysqlRest.RestConnectionBuild(sql, option);
     		
     		//Process result
     		while(rest.next()){
