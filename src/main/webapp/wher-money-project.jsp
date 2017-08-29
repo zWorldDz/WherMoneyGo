@@ -40,7 +40,7 @@
 <body>
     <section id="top">
       <div class="container text-center">
-        <div><h3>Available Budget In <span id="avdate">26 July 2017</span></h3></div> 
+        <div><h3>Available Budget In <span id="avdate"></span></h3></div> 
         <div><h2><span id="avamount">+ 2,345.64</span></h2></div> 
         <div>Income <span id="top_income"></span></div> 
         <div>Expenses <span id="top_expense">5,000.00</span></div> 
@@ -104,7 +104,7 @@
               <td  value="${temp.description}" data-toggle="modal" data-target="#myModal">${temp.description}</td>
               <td  value="${temp.amount}"data-toggle="modal" data-target="#myModal">${temp.amount}</td>
               <td data-toggle="modal" data-target="#myModal">${temp.date}</td>
-              <td data-toggle="modal" data-target="#myModal"><a class="glyphicon glyphicon glyphicon-minus income-remove" name="REMOVE" value="${temp.detail_id}"></a></td>                
+              <td data-toggle="modal" data-target="#myModal"><a class="glyphicon glyphicon glyphicon-minus income-remove" name="REMOVE_INCOME" value="${temp.detail_id}"></a></td>                
           </tr>
               <c:set var="total" value="${total + temp.amount}" />
           </c:forEach>    
@@ -113,11 +113,45 @@
     </form>
       <script>
       	$("#top_income").html(<c:out value='${total}'/>);
-
       </script>
     </div>
     </div>    
 
+    <div class="col-md-6">
+    <div id="tb-expense"class="text-center">
+    <h3>Expenses</h3>
+        <form>
+        <c:set var="total" value="${0}"/>
+    
+      <table id="expense-table" class="table table-striped table-hover">
+        <thead>
+        <tr>
+          <th class="text-center">ID.</th>    
+          <th class="text-center">Description</th>    
+          <th class="text-center">Amount</th>     
+          <th class="text-center">Date</th>     
+          <th class="text-center">Action</th>     
+        </tr>    
+        </thead>
+        <tbody>
+          <c:forEach var="temp" items="${LIST_EXPENSE}" >
+          <!-- Link for list of details -->
+          <tr id="${temp.detail_id}" >
+              <td  data-toggle="modal" data-target="#myModal">${temp.detail_id}</td>
+              <td  value="${temp.description}" data-toggle="modal" data-target="#myModal">${temp.description}</td>
+              <td  value="${temp.amount}"data-toggle="modal" data-target="#myModal">${temp.amount}</td>
+              <td data-toggle="modal" data-target="#myModal">${temp.date}</td>
+              <td data-toggle="modal" data-target="#myModal"><a class="glyphicon glyphicon glyphicon-minus expense-remove" name="REMOVE_EXPENSE" value="${temp.detail_id}"></a></td>                
+          </tr>
+          </c:forEach> 
+        </tbody>
+      </table>
+     </form>
+    </div>    
+    </div>    
+        
+    </section>
+    
 <!-- Modal -->
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -125,6 +159,7 @@
     <div class="modal-content" style="width: 402px;margin:auto;">
                 <form id="modal-form" >
                 <input id="modal_to_ser_id" type="hidden" value=""/>
+                <input id="modal_type" type="hidden" value=""/>
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Update Detail</h4>
@@ -149,25 +184,24 @@
     
   </div>
 </div>
-    
       <script>
       
       $(".income-remove").click(function(){
           console.log("Income Remove");
-
+		
           /*
            * Ajax Post method
            */
           var description = $("#description").val();
-     	  var incomeId = $(this).attr("value");
+        var incomeId = $(this).attr("value");
           //JSON Format
           var toSer = {  //Data that need to be send to server
-            command: "REMOVE",
+            command: "REMOVE_INCOME",
             incomeId: incomeId
             };
-          		  
+                
            $.ajax({
-          	 
+             
             type: "Get", //Method Used
             
             url:"DetailController", //API Path
@@ -175,7 +209,7 @@
             data:toSer, //Data that need to be send to server
                       
             success:function(data) {
-          	  window.location.replace('/WherMoneyGoo/DetailController');
+              window.location.replace('/WherMoneyGoo/DetailController');
             },
             error:function(textStatus, errorThrown) {
               console.log(textStatus);//Display error in console log
@@ -183,18 +217,49 @@
           });
         });
 
+      
+      $(".expense-remove").click(function(){
+          console.log("Expense Remove");
 		
+          /*
+           * Ajax Post method
+           */
+          var description = $("#description").val();
+        var expenseId = $(this).attr("value");
+          //JSON Format
+          var toSer = {  //Data that need to be send to server
+            command: "REMOVE_EXPENSE",
+            expenseId: expenseId
+            };
+                
+           $.ajax({
+             
+            type: "Get", //Method Used
+            
+            url:"DetailController", //API Path
+            
+            data:toSer, //Data that need to be send to server
+                      
+            success:function(data) {
+              window.location.replace('/WherMoneyGoo/DetailController');
+            },
+            error:function(textStatus, errorThrown) {
+              console.log(textStatus);//Display error in console log
+            }
+          });
+        });
+
       
       $("#submit-btn").click(function(e){
         console.log("Form");
         /*
          * Ajax Post method
          */
-		 e.preventDefault();
+     e.preventDefault();
          var description = $("#description").val();
          var amount = $("#amount").val();
          var symbol = $("#symbol").val();
-		                  
+                      
         //JSON Format
         var toSer = {  //Data that need to be send to server
           command: "ADD",
@@ -203,9 +268,9 @@
           amount:amount,
           date:callTodayDate()
           };
-        		  
+              
          $.ajax({
-        	 
+           
           type: "Post", //Method Used
           
           url:"DetailController", //API Path
@@ -213,7 +278,7 @@
           data:toSer, //Data that need to be send to server
                     
           success:function(data) {
-        	  window.location.replace('/WherMoneyGoo/DetailController');
+            window.location.replace('/WherMoneyGoo/DetailController');
           },
           error:function(textStatus, errorThrown) {
             console.log(textStatus);//Display error in console log
@@ -223,11 +288,10 @@
       
       $("#modal-submit-btn").click(function(e){
           console.log("Modal_Form");
-          alert("form");
           /*
            * Ajax Post method
            */
-  		   e.preventDefault();
+         e.preventDefault();
           
            var description = $("#description_modal").val();
            var amount = $("#amount_modal").val();
@@ -235,16 +299,16 @@
            
           //JSON Format
           var toSer = {  //Data that need to be send to server
-            command: "UPDATE",
+            command: "UPDATE"+$("#modal_type").val(),
             description:description,
             amount:amount,
             incomeId: incomeId
             };
-  		  alert(toSer.command);
-  		  alert(toSer.description);
-  		  alert(toSer.amount);
+        alert(toSer.command);
+        alert(toSer.description);
+        alert(toSer.amount);
            $.ajax({
-          	 
+             
             type: "Post", //Method Used
             
             url:"DetailController", //API Path
@@ -252,7 +316,7 @@
             data:toSer, //Data that need to be send to server
                       
             success:function(data) {
-          	  window.location.replace('/WherMoneyGoo/DetailController');
+              window.location.replace('/WherMoneyGoo/DetailController');
             },
             error:function(textStatus, errorThrown) {
               console.log(textStatus);//Display error in console log
@@ -261,56 +325,39 @@
         });
 
       $(document).ready(function() {
-    	  callTodayDate();
+        callTodayDate();
           var income = $('#income-table').DataTable({
-        	  "searching": false
+            "searching": false
           });
           
           // Activate an inline edit 
           $('#income-table').on( 'click', 'tbody tr', function (e) {
-        	  var desc = $(this).find('td:nth-child(2)').html();
-          	  var amount = $(this).find('td:nth-child(3)').html();
-          	 $("#modal_to_ser_id").val($(this).attr("id"));        	  
-        	  
-      		$("#description_modal").val(desc);
-    		$("#amount_modal").val(amount);
+            var desc = $(this).find('td:nth-child(2)').html();
+              var amount = $(this).find('td:nth-child(3)').html();
+             $("#modal_to_ser_id").val($(this).attr("id"));           
+            
+          $("#description_modal").val(desc);
+        $("#amount_modal").val(amount);
+        $("#modal_type").val("INCOME");
+
           } );
           
           var expense =  $('#expense-table').DataTable({
-        	  "searching": false
+            "searching": false
           });
+          
+          
+          // Activate an inline edit 
+          $('#expense-table').on( 'click', 'tbody tr', function (e) {
+            var desc = $(this).find('td:nth-child(2)').html();
+              var amount = $(this).find('td:nth-child(3)').html();
+             $("#modal_to_ser_id").val($(this).attr("id"));           
+            
+          $("#description_modal").val(desc);
+        $("#amount_modal").val(amount);
+        $("#modal_type").val("EXPENSE");
+          } );
       } );
     </script>
-    <div class="col-md-6">
-    <div id="tb-expense"class="text-center">
-    <h3>Expenses</h3>
-      <table id="expense-table" class="table table-striped table-hover">
-        <thead>
-        <tr>
-          <th class="text-center">ID.</th>    
-          <th class="text-center">Description</th>    
-          <th class="text-center">Amount</th>     
-          <th class="text-center">Date</th>     
-          <th class="text-center">Action</th>     
-        </tr>    
-        </thead>
-        <tbody>
-          <c:forEach var="temp" items="${LIST_EXPENSE}" >
-          <!-- Link for list of details -->
-          <tr>
-              <td>${temp.detail_id}</td>
-              <td>${temp.description}</td>
-              <td>${temp.amount}</td>
-              <td>${temp.date}</td>
-              <td><a class="glyphicon glyphicon glyphicon-minus income-remove" name="REMOVE" value="${temp.detail_id}"></a></td>                
-          </tr>
-          </c:forEach> 
-        </tbody>
-      </table>
-      
-    </div>    
-    </div>    
-        
-    </section>
 </body>
 </html>
