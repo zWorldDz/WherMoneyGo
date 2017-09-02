@@ -31,15 +31,22 @@
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
   
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
     
+
     <link rel="stylesheet" href="css/StandBy.css" type="text/css"/>
     
     <script src="js/StandBy.js"></script>
     
 </head>
-<body>
-    <section id="top">
-      <div class="container text-center">
+<body >
+    <section id="top" style="background-image: url('images/bg--save.jpg');
+                                                  background-size:cover;
+                                                  background-position: center;
+                                                  height: 300px;"  class="container text-center">
+                                                  
+      <div id="amount-container" class="container text-center">
         <div><h3>Available Budget In <span id="avdate"></span></h3></div> 
         <div><h2><span id="avamount">+ 2,345.64</span></h2></div> 
         <div>Income <span id="top_income"></span></div> 
@@ -47,7 +54,7 @@
       </div>
     </section>
     
-    <section id="middle">
+    <section id="middle" class="container text-center">
     <form id="detail-form" class="form-inline"role="form">
     <div class="container text-center">
         
@@ -81,19 +88,19 @@
     <section id="bot" class="container text-center">
     <div class="col-md-6">
     <div id="tb-income" class="text-center">
-    <h3>Icome</h3>
+    <h3 id="h3-income">Icome</h3>
     
     <form>
     <c:set var="total" value="${0}"/>
    
-    <table id="income-table" class="table table-striped table-hover">
+    <table id="income-table" class="table table-striped table-hover " cellspacing="0">
         <thead>
         <tr>
           <th class="text-center">ID.</th>    
-          <th class="text-center">Description</th>    
-          <th class="text-center">Amount</th>     
+          <th class="text-center all">Description</th>    
+          <th class="text-center all">Amount</th>     
           <th class="text-center">Date</th>     
-          <th class="text-center">Action</th>     
+          <th class="text-center all">Action</th>     
         </tr>   
         </thead>
         <tbody>
@@ -112,25 +119,25 @@
     </table>
     </form>
       <script>
-      	$("#top_income").html(<c:out value='${total}'/>);
+      	$("#top_income").html( <c:out value='${total}'/>);
       </script>
     </div>
     </div>    
 
     <div class="col-md-6">
-    <div id="tb-expense"class="text-center">
-    <h3>Expenses</h3>
+    <div id="tb-expense"class="text-center ">
+    <h3 id="h3-expenses">Expenses</h3>
         <form>
         <c:set var="total" value="${0}"/>
     
-      <table id="expense-table" class="table table-striped table-hover">
+      <table id="expense-table" class="table table-striped table-hover" >
         <thead>
         <tr>
           <th class="text-center">ID.</th>    
-          <th class="text-center">Description</th>    
-          <th class="text-center">Amount</th>     
+          <th class="text-center all">Description</th>    
+          <th class="text-center all">Amount</th>     
           <th class="text-center">Date</th>     
-          <th class="text-center">Action</th>     
+          <th class="text-center all">Action</th>     
         </tr>    
         </thead>
         <tbody>
@@ -143,10 +150,24 @@
               <td data-toggle="modal" data-target="#myModal">${temp.date}</td>
               <td data-toggle="modal" data-target="#myModal"><a class="glyphicon glyphicon glyphicon-minus expense-remove" name="REMOVE_EXPENSE" value="${temp.detail_id}"></a></td>                
           </tr>
+          <c:set var="total" value="${total + temp.amount}" />
+          
           </c:forEach> 
         </tbody>
       </table>
      </form>
+           <script>
+        $("#top_expense").html(<c:out value='${total}'/>);
+        
+     	var top_income = $("#top_income").html();
+     	var top_expense = $("#top_expense").html();
+     	console.log(top_income);
+     	console.log(top_expense);
+        var avamount = top_income - top_expense;
+        if(isNaN(avamount))
+        	avamount = 0;
+        $("#avamount").html("$ " + avamount);
+      </script>
     </div>    
     </div>    
         
@@ -156,7 +177,7 @@
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-sm" role="document" >
-    <div class="modal-content" style="width: 402px;margin:auto;">
+    <div class="modal-content" style="width: 302px;margin:auto;">
                 <form id="modal-form" >
                 <input id="modal_to_ser_id" type="hidden" value=""/>
                 <input id="modal_type" type="hidden" value=""/>
@@ -304,9 +325,6 @@
             amount:amount,
             incomeId: incomeId
             };
-        alert(toSer.command);
-        alert(toSer.description);
-        alert(toSer.amount);
            $.ajax({
              
             type: "Post", //Method Used
@@ -327,7 +345,9 @@
       $(document).ready(function() {
         callTodayDate();
           var income = $('#income-table').DataTable({
-            "searching": false
+            "searching": false,
+            "responsive": true
+
           });
           
           // Activate an inline edit 
@@ -343,7 +363,8 @@
           } );
           
           var expense =  $('#expense-table').DataTable({
-            "searching": false
+            "searching": false,
+            "responsive": true
           });
           
           
@@ -353,7 +374,7 @@
               var amount = $(this).find('td:nth-child(3)').html();
              $("#modal_to_ser_id").val($(this).attr("id"));           
             
-          $("#description_modal").val(desc);
+        $("#description_modal").val(desc);
         $("#amount_modal").val(amount);
         $("#modal_type").val("EXPENSE");
           } );

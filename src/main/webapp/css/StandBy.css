@@ -1,3 +1,8 @@
+body{
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-size:8px;
+}
+
 #sbtn:hover{
     cursor: pointer;
 }
@@ -7,10 +12,13 @@
 }
 
 #middle{
-    background-color: #f4f4f4;
-    margin: 20px;
+    background-color: #0074D9;
+    margin-bottom:10px;
+    border-radius:3px;
 }
-
+#amount-container{
+	padding-top:40px;
+}
 input,select,a{
     margin: 10px;
 }
@@ -29,3 +37,18 @@ input,select,a{
     cursor: pointer;
     text-decoration: none;
 }
+.form-control {
+	width:95%;
+}
+#bot h3{
+	border-radius:5px;
+	padding:10px;
+}
+#h3-income{
+	color:#001f3f;
+	background-color:#7FDBFF;
+}
+#h3-expenses{
+	color:#7FDBFF;
+	background-color:#001f3f;
+	}
