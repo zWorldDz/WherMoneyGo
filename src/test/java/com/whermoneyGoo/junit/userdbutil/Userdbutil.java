@@ -1,11 +1,11 @@
 package com.whermoneyGoo.junit.userdbutil;
 
-import org.junit.*;
+//import org.junit.*;
 
-import com.whermoneyGoo.dao.DetailDbUtil;
-import com.whermoneyGoo.dao.UserDbUtil;
-import com.whermoneyGoo.model.Detail;
-import com.whermoneyGoo.model.User;
+//import com.whermoneyGoo.dao.DetailDbUtil;
+//import com.whermoneyGoo.dao.UserDbUtil;
+//import com.whermoneyGoo.model.Detail;
+//import com.whermoneyGoo.model.User;
 
 public class Userdbutil {
 	//@Resource(name="jdbc/save_money")
