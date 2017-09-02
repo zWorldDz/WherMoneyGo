@@ -10,7 +10,7 @@ import com.whermoneyGoo.model.User;
 public class Userdbutil {
 	//@Resource(name="jdbc/save_money")
 	//private DataSource dataSource;
-	
+	/*
 	@Test
 	public void test_user_method() throws Exception {
 		UserDbUtil user = new UserDbUtil();
@@ -24,5 +24,5 @@ public class Userdbutil {
 		for(Detail i:details.getIncomes())
 			System.out.println(i);
     }
-	
+	*/
 }
